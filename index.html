@@ -15,7 +15,8 @@
 <style>
 /* Layout: el mundo de papel del programa. Una columna de cartulinas recortadas a mano que cuelgan con pinzas de un
    hilo de lana roja sobre papel kraft; los pasos son etiquetas colgadas del mismo hilo. Todo se mueve «a saltos»
-   (steps()), como el stop-motion del grafismo. En pantallas anchas los resultados van en dos columnas. */
+   (steps()), como el stop-motion del grafismo. Los resultados van en horizontal: las tres comparativas de cada
+   pregunta en fila (en el móvil, una tira que se desliza) y un botón para descargar cada una en PNG 1920×1080. */
 :root {
   --kraft: #e6d6b8;
   --kraft-osc: #d3bf98;
@@ -59,7 +60,7 @@ body {
   filter: drop-shadow(1px 2px 0 rgba(90, 50, 20, .25)); }
 
 .pagina { position: relative; z-index: 1; max-width: 35rem; margin: 0 auto; display: grid; gap: 1.6rem; }
-body.ver-resultados .pagina { max-width: 74rem; }
+body.ver-resultados .pagina { max-width: 84rem; }
 
 /* cabecera: logo y título de letras de cartulina */
 .cabecera { display: grid; justify-items: center; text-align: center; gap: .1rem; padding-top: .4rem; }
@@ -171,18 +172,35 @@ legend { font-family: var(--f-titulo); font-weight: 700; font-size: 1.16rem; lin
   font-size: clamp(2.1rem, 8vw, 2.8rem); text-shadow: 0 2px 0 var(--rojo-osc), 0 8px 10px rgba(90, 25, 15, .2); }
 .gracias p { margin: 0; color: var(--tinta-suave); }
 .resultados { display: grid; gap: 1.8rem; }
-@media (min-width: 62rem) { .resultados { grid-template-columns: 1fr 1fr; align-items: start; } }
-.resultados .tendedero:nth-child(1) .carta { --giro: -.35deg; } .resultados .tendedero:nth-child(2) .carta { --giro: .3deg; }
+.resultados .tendedero:nth-child(1) .carta { --giro: -.2deg; } .resultados .tendedero:nth-child(2) .carta { --giro: .18deg; }
+.resultados .carta h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
+.resultados .carta { padding-inline: clamp(1.1rem, 2.4vw, 2rem); }
 .leyenda { display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; margin: .7rem 0 .2rem; padding: 0; list-style: none; font-size: .92rem; font-weight: 800; }
 .leyenda li { display: inline-flex; align-items: center; gap: .45rem; }
 .leyenda i { width: 1rem; height: 1rem; border-radius: 3px 5px 4px 6px; display: inline-block; transform: rotate(-6deg); box-shadow: 0 1px 0 rgba(0,0,0,.2); }
-.grupo { margin-top: 1.25rem; }
+.pagina > *, .resultados > *, .tendedero > .carta { min-width: 0; }
+.grupos { display: grid; gap: 1.1rem; margin-top: 1rem; }
+@media (min-width: 52rem) { .grupos { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; } }
+@media (max-width: 51.99rem) {
+  .grupos { grid-auto-flow: column; grid-auto-columns: 84%; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    margin-inline: -.35rem; padding: .2rem .35rem .8rem; scrollbar-width: thin; scrollbar-color: var(--oro-claro) transparent; }
+  .grupo { scroll-snap-align: center; }
+}
+.grupo { background: rgba(255, 253, 247, .7); border: 2px solid var(--oro-claro); border-radius: 5px 9px 6px 8px; padding: 1rem 1rem 1.1rem;
+  box-shadow: 0 3px 0 rgba(80, 45, 15, .08); display: flex; flex-direction: column; }
+.grupo .filas { flex: 1; align-content: space-evenly; }
+.desliza { display: none; margin: .2rem 0 0; font-family: var(--f-mano); font-weight: 700; font-size: 1.25rem; color: var(--oro); text-align: right; }
+@media (max-width: 51.99rem) { .desliza { display: block; } }
+.descargar { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; margin-top: 1.3rem; }
+a.boton { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; text-decoration: none; }
+.boton.peq { font-size: 1rem; padding: .75rem 1.4rem; min-width: 0; }
+.boton.peq svg { width: 1.1em; height: 1.1em; flex: none; }
 .grupo h3 { margin: 0; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--tinta-suave); font-weight: 900; }
-.nota { position: relative; display: inline-block; margin: .1rem 0 .7rem; font-family: var(--f-mano); font-weight: 700; font-size: 1.55rem;
+.nota { position: relative; display: inline-block; margin: .1rem 0 .8rem; font-family: var(--f-mano); font-weight: 700; font-size: 1.4rem;
   color: var(--rojo); line-height: 1.05; padding-bottom: .3rem;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='8' viewBox='0 0 120 8'%3E%3Cpath d='M1 5 C 20 1, 40 8, 60 4 S 100 2, 119 5' fill='none' stroke='%23b38428' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") left bottom / 100% 8px no-repeat; }
 .filas { display: grid; gap: .5rem; }
-.fila { display: grid; grid-template-columns: minmax(6.5rem, 9.5rem) 1fr; gap: .65rem; align-items: center; }
+.fila { display: grid; grid-template-columns: 1fr; gap: .2rem; }
 .fila .etq { font-size: .93rem; font-weight: 800; line-height: 1.2; min-width: 0; }
 .barra { display: flex; height: 2rem; border-radius: 4px 8px 5px 7px; overflow: hidden; background: var(--linea);
   font-variant-numeric: tabular-nums; transform-origin: left center; animation: crece 1s steps(10, end) both;
@@ -190,6 +208,9 @@ legend { font-family: var(--f-titulo); font-weight: 700; font-size: 1.16rem; lin
 .barra span { display: flex; align-items: center; justify-content: center; font-size: .88rem; font-weight: 900; white-space: nowrap; overflow: hidden;
   background-image: repeating-linear-gradient(100deg, rgba(255,255,255,.07) 0 2px, transparent 2px 7px); }
 .barra span + span { box-shadow: inset 2px 0 0 rgba(252, 247, 236, .55); }
+.barra b { font-weight: inherit; }
+.barra span.peq { font-size: .72rem; letter-spacing: -.02em; }
+.barra span.sin b { visibility: hidden; }
 .s-rojo { background-color: var(--rojo); color: var(--carta); }
 .s-oro { background-color: var(--oro-claro); color: var(--tinta); }
 .s-tinta { background-color: var(--tinta); color: var(--carta); }
@@ -198,7 +219,6 @@ legend { font-family: var(--f-titulo); font-weight: 700; font-size: 1.16rem; lin
 .pie .marca { font-family: var(--f-mano); font-weight: 700; font-size: 1.6rem; color: var(--rojo); }
 .pie small { font-size: .8rem; color: var(--tinta-suave); }
 
-@media (max-width: 40rem) { .fila { grid-template-columns: 1fr; gap: .15rem; } }
 @media (max-width: 30rem) { .progreso ol { gap: .35rem; } .progreso li span { font-size: .68rem; letter-spacing: .03em; padding: .5rem .55rem .42rem 1.15rem; }
   .progreso li span::before { left: .42rem; } }
 @media (max-width: 24rem) { .boton { min-width: 0; width: 100%; } }
@@ -209,8 +229,6 @@ legend { font-family: var(--f-titulo); font-weight: 700; font-size: 1.16rem; lin
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} [hidden]{display:none!important} img{max-width:100%}</style>
 </head>
 <body>
-
-
 <div class="fondo" aria-hidden="true">
   <svg viewBox="0 0 32 29" style="--t:120px;--g:-14deg;left:-28px;top:18%;--o:.16"><path fill="#9b1b24" d="M16 28C7 21 0 15 0 8.5 0 3.8 3.6 0 8 0c3.4 0 6.2 2 8 5 1.8-3 4.6-5 8-5 4.4 0 8 3.8 8 8.5C32 15 25 21 16 28z"/></svg>
   <svg viewBox="0 0 32 29" style="--t:70px;--g:12deg;right:3%;top:7%;--o:.2"><path fill="#b38428" d="M16 28C7 21 0 15 0 8.5 0 3.8 3.6 0 8 0c3.4 0 6.2 2 8 5 1.8-3 4.6-5 8-5 4.4 0 8 3.8 8 8.5C32 15 25 21 16 28z"/></svg>
@@ -343,19 +361,19 @@ legend { font-family: var(--f-titulo); font-weight: 700; font-size: 1.16rem; lin
   // Resultados del programa (fijos): siempre salen estos, voten lo que voten.
   var PREGUNTAS = [
     {
-      num: "Pregunta 1", titulo: "¿Pones muchos límites en el amor?",
+      num: "Pregunta 1", titulo: "¿Pones muchos límites en el amor?", png: "estadisticas_pregunta1.png",
       series: [["Más límites", "s-rojo"], ["Menos límites", "s-oro"]],
       grupos: [
         { t: "Por edad", nota: "Cuanto más joven, más límites", filas: [
           ["Menos de 16", [78, 22]], ["16 a 18", [71, 29]], ["19 a 25", [58, 42]], ["26 a 40", [46, 54]], ["Más de 40", [39, 61]] ] },
-        { t: "Por identidad de género", nota: "Las personas cis son las que más límites quieren", filas: [
+        { t: "Por identidad de género", nota: "Las personas cis, las que más límites quieren", filas: [
           ["Personas cis", [69, 31]], ["Personas trans", [41, 59]], ["Personas no binarias", [36, 64]] ] },
-        { t: "Por orientación sexual", nota: "Heterosexuales, más límites; homosexuales, menos", filas: [
+        { t: "Por orientación sexual", nota: "Heterosexuales, más; homosexuales, menos", filas: [
           ["Heterosexual", [74, 26]], ["Bisexual", [49, 51]], ["Otras", [45, 55]], ["Homosexual", [28, 72]] ] }
       ]
     },
     {
-      num: "Pregunta 2", titulo: "¿Puedes ser amigo de tu ex?",
+      num: "Pregunta 2", titulo: "¿Puedes ser amigo de tu ex?", png: "estadisticas_pregunta2.png",
       series: [["Sí", "s-rojo"], ["Depende", "s-oro"], ["No", "s-tinta"]],
       grupos: [
         { t: "Por edad", nota: "Cuanto mayor, menos amistad con el ex", filas: [
@@ -456,7 +474,7 @@ legend { font-family: var(--f-titulo); font-weight: 700; font-size: 1.16rem; lin
       var html = '<span class="pinza i" aria-hidden="true"></span><span class="pinza d" aria-hidden="true"></span>' +
         '<div class="carta"><span class="num">' + p.num + "</span><h2>" + p.titulo + '</h2><ul class="leyenda">';
       p.series.forEach(function (s) { html += '<li><i class="' + s[1] + '"></i>' + s[0] + "</li>"; });
-      html += "</ul>";
+      html += '</ul><p class="desliza" aria-hidden="true">desliza para ver más →</p><div class="grupos">';
       p.grupos.forEach(function (g, gi) {
         html += '<div class="grupo"><h3>' + g.t + '</h3><p class="nota">' + g.nota + '</p><div class="filas">';
         g.filas.forEach(function (fila, n) {
@@ -464,13 +482,15 @@ legend { font-family: var(--f-titulo); font-weight: 700; font-size: 1.16rem; lin
           html += '<div class="fila"><span class="etq">' + fila[0] + '</span><div class="barra" role="img" aria-label="' +
             fila[0] + ": " + desc + '" style="animation-delay:' + (0.3 + gi * 0.25 + n * 0.08).toFixed(2) + 's">';
           fila[1].forEach(function (v, i) {
-            html += '<span class="' + p.series[i][1] + '" style="width:' + v + '%">' + (v >= 13 ? v + " %" : "") + "</span>";
+            html += '<span class="' + p.series[i][1] + '" style="width:' + v + '%"><b>' + v + " %</b></span>";
           });
           html += "</div></div>";
         });
         html += "</div></div>";
       });
-      html += "</div>";
+      html += '</div><div class="descargar"><a class="boton sec peq" href="' + p.png + '" download="' + p.png.replace("estadisticas", "bum_o_bam_estadisticas") +
+        '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>Descargar imagen PNG (1920×1080)</a></div></div>';
       art.innerHTML = html;
       cont.appendChild(art);
       vigilar(art.querySelector(".carta"));
@@ -491,10 +511,25 @@ legend { font-family: var(--f-titulo); font-weight: 700; font-size: 1.16rem; lin
     setTimeout(function () { cap.innerHTML = ""; }, 1300);
   }
 
+  // un porcentaje solo se escribe si cabe holgado dentro de su trozo de barra
+  function ajustarEtiquetas() {
+    document.querySelectorAll(".barra span").forEach(function (sp) {
+      var b = sp.firstChild;
+      if (!b) return;
+      sp.classList.remove("peq", "sin");
+      if (b.offsetWidth + 6 > sp.clientWidth) sp.classList.add("peq");
+      if (b.offsetWidth + 4 > sp.clientWidth) sp.classList.add("sin");
+    });
+  }
+  var espera;
+  window.addEventListener("resize", function () { clearTimeout(espera); espera = setTimeout(ajustarEtiquetas, 120); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustarEtiquetas);
+
   function verResultados(desdeEncuesta) {
     pintarResultados();
     $("#gracias").hidden = !desdeEncuesta;
     mostrar("resultados");
+    ajustarEtiquetas();
   }
 
   fDatos.addEventListener("change", revisarDatos);
